@@ -18,8 +18,6 @@ import { useEffect, useRef, useState } from "react";
 const ViewAllTrip: React.FC = () => {
     const [trips, setTrips] = useState<Trips[]>([]);
     const tripsRef = useRef<Trips[]>([]);
-    console.log("tripsRef", tripsRef);
-    // console.log("trips", trips);
     const fetchTripAll = async () => {
         const allTrip = await getAllTrip();
         setTrips(allTrip);

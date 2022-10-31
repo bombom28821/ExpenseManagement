@@ -1,18 +1,41 @@
 import {
-    IonButton,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
     IonCol,
     IonContent,
     IonGrid,
     IonHeader,
+    IonIcon,
+    IonItem,
     IonLabel,
+    IonList,
     IonPage,
-    IonRouterLink,
     IonRow,
     IonTitle,
     IonToolbar,
 } from "@ionic/react";
+import { trailSign, warning } from "ionicons/icons";
+import { useEffect, useState } from "react";
+import { getAllTrip } from "../database/databaseHandler";
+import { Trips } from "../models/Trips";
 
 const Home: React.FC = () => {
+    const [amountTrips, setAmountTrips] = useState(0);
+    const [amountRiskTrips, setAmountRiskTrips] = useState(0);
+    const [recentTrips, setRecentTrips] = useState<Trips[]>([]);
+    const fetchTripAll = async () => {
+        const amountTripsDB = await getAllTrip();
+        setAmountTrips(amountTripsDB.length);
+        const amountRiskTripsDB = amountTripsDB.filter(
+            (trip) => trip.is_risk === true
+        );
+        setAmountRiskTrips(amountRiskTripsDB.length);
+    };
+    useEffect(() => {
+        fetchTripAll();
+    }, []);
     return (
         <IonPage>
             <IonHeader>
@@ -21,32 +44,40 @@ const Home: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                            <IonButton>
-                                <IonRouterLink
-                                    routerLink={`trip/add`}
-                                    color="light"
-                                >
-                                    Add Trip
-                                </IonRouterLink>
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                    <IonRow>
-                        <IonCol>
-                            <IonButton>
-                                <IonRouterLink
-                                    routerLink={`trip/view`}
-                                    color="light"
-                                >
-                                    View Trip
-                                </IonRouterLink>
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
+                <IonCard color="success">
+                    <IonCardHeader>
+                        <IonRow
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <IonCardSubtitle>
+                                Total number of trips
+                            </IonCardSubtitle>
+                            <IonIcon icon={trailSign} size="large" />
+                        </IonRow>
+                        <IonCardTitle>{`${amountTrips}`}</IonCardTitle>
+                    </IonCardHeader>
+                </IonCard>
+                <IonCard color="tertiary">
+                    <IonCardHeader>
+                        <IonRow
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <IonCardSubtitle>
+                                Total number of risk trips
+                            </IonCardSubtitle>
+                            <IonIcon icon={warning} size="large" />
+                        </IonRow>
+                        <IonCardTitle>{`${amountRiskTrips}`}</IonCardTitle>
+                    </IonCardHeader>
+                </IonCard>
             </IonContent>
         </IonPage>
     );

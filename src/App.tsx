@@ -1,6 +1,16 @@
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, setupIonicReact } from "@ionic/react";
+import {
+    IonApp,
+    IonIcon,
+    IonLabel,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { addCircle, eye, home } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -29,18 +39,39 @@ setupIonicReact();
 const App: React.FC = () => (
     <IonApp>
         <IonReactRouter>
-            <Route exact path="/">
-                <Home></Home>
-            </Route>
-            <Route exact path="/trip/add">
-                <AddTrip></AddTrip>
-            </Route>
-            <Route exact path="/trip/view">
-                <ViewAllTrip></ViewAllTrip>
-            </Route>
-            <Route exact path="/trip/view/:id">
-                <AddTrip></AddTrip>
-            </Route>
+            <IonTabs>
+                <IonRouterOutlet>
+                    <Route exact path="/home">
+                        <Home />
+                    </Route>
+                    <Route exact path="/trip/add">
+                        <AddTrip />
+                    </Route>
+                    <Route exact path="/trip/view">
+                        <ViewAllTrip />
+                    </Route>
+                    <Route exact path="/trip/view/:id">
+                        <AddTrip></AddTrip>
+                    </Route>
+                    <Route exact path="/">
+                        <Redirect to="/home"></Redirect>
+                    </Route>
+                </IonRouterOutlet>
+                <IonTabBar slot="bottom">
+                    <IonTabButton tab="home" href="/home">
+                        <IonIcon icon={home} />
+                        <IonLabel>Home</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="addTrip" href="/trip/add">
+                        <IonIcon icon={addCircle} />
+                        <IonLabel>Add Trip</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="viewTrip" href="/trip/view">
+                        <IonIcon icon={eye} />
+                        <IonLabel>View Trip</IonLabel>
+                    </IonTabButton>
+                </IonTabBar>
+            </IonTabs>
         </IonReactRouter>
     </IonApp>
 );
