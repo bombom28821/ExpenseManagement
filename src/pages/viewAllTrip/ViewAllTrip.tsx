@@ -18,7 +18,6 @@ import "./viewAllTrip.css";
 import { trash } from "ionicons/icons";
 import { Trips } from "../../models/Trips";
 import { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router";
 
 const ViewAllTrip: React.FC = () => {
   const [trips, setTrips] = useState<Trips[]>([]);
@@ -85,7 +84,7 @@ const ViewAllTrip: React.FC = () => {
       <IonContent>
         <IonSearchbar onIonChange={handleSearchQuery}></IonSearchbar>
         <IonList inset={true}>
-          {trips.length > 0 &&
+          {trips.length > 0 ? (
             trips.map((trip) => (
               <IonItem key={trip.id}>
                 <IonLabel>
@@ -104,7 +103,18 @@ const ViewAllTrip: React.FC = () => {
                   onClick={() => handleShowModalDeleteTrip(trip.id)}
                 ></IonIcon>
               </IonItem>
-            ))}
+            ))
+          ) : (
+            <IonItem>
+              <IonLabel
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Not found any trip!
+              </IonLabel>
+            </IonItem>
+          )}
         </IonList>
       </IonContent>
     </IonPage>
